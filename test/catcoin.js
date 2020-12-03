@@ -2,13 +2,6 @@ const { expectEvent, expectRevert } = require('@openzeppelin/test-helpers')
 
 const CatCoin = artifacts.require('CatCoin')
 
-// Helper Functions
-const ether = (val) => {
-  return web3.utils.toBN(
-    web3.utils.toWei(val, 'ether')
-  )
-}
-
 contract('CatCoin', async ([owner, alice, bob]) => {
   let catcoin
   const totalSupply = 3
@@ -37,8 +30,8 @@ contract('CatCoin', async ([owner, alice, bob]) => {
     let purchaseReceipt
     
     before('Get initial balances', async () => {
-      catcoinEtherInitial = ether(await web3.eth.getBalance(catcoin.address))
-      aliceEtherInitial = ether(await web3.eth.getBalance(alice))
+      catcoinEtherInitial = web3.utils.toBN(await web3.eth.getBalance(catcoin.address))
+      aliceEtherInitial = web3.utils.toBN(await web3.eth.getBalance(alice))
 
       catcoinCatsInitial = parseInt(await catcoin.balanceOf(catcoin.address))
       aliceCatsInitial = parseInt(await catcoin.balanceOf(alice))
@@ -65,7 +58,7 @@ contract('CatCoin', async ([owner, alice, bob]) => {
     })
 
     it('Should subtract the Ether balance of alice', async () => {
-      const aliceEtherBalance = ether(await web3.eth.getBalance(alice))
+      const aliceEtherBalance = web3.utils.toBN(await web3.eth.getBalance(alice))
       // Here we check that the ether balance has decrease from
       // the initial balance.  We do not check the exact balance
       // because gas fees will make it imprecise
